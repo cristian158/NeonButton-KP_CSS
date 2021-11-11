@@ -1,0 +1,90 @@
+// VARs
+
+$clr-neon: hsl(198 100% 54%);
+$clr-bg: hsl(198 21% 15%);
+
+*,
+*::before,
+*::after{
+	box-sizing: border-box;
+}
+
+
+body{
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	background: $clr-bg;
+	color: $clr-neon;
+	padding-right: 10rem;
+}
+
+.neon-button{
+	font-size: 3rem;
+
+	display: inline-block;
+	cursor: pointer;
+	text-decoration: none;
+	color: $clr-neon;
+	border: $clr-neon .125em solid; // 4px = .125em
+	padding: .25em 1em;
+	border-radius: .25em;
+
+	text-shadow:
+		0 0 0.125em hsl(0 0% 100% / .25),
+		0 0 .45em currentColor;/* 0 offset 0 offset 1em of blurr */
+
+	box-shadow: inset 0 0 .5em 0 $clr-neon,
+		0 0 .5em 0 $clr-neon; /* inset adds shadow inside */
+
+	position: relative;
+	&::before{
+		// this is the shadow
+		pointer-events: none; // so it doesn't activate the glowing if we hover over the shadow
+		content: '';
+		position: absolute;
+		background: $clr-neon;
+		top: 120%;
+		left: 0;
+		width: 100%;
+		height: 100%;
+
+		transform: perspective(1em) rotateX(40deg) scale(1, .35);
+		// perspective has to be declared before the things on perspective
+		filter: blur(1em);
+		opacity: .7;
+	}
+	&::after{
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		// background: yellowgreen;
+		box-shadow: 0 0 2em .5em $clr-neon;
+		opacity: 0;
+		transition: opacity .3s linear;
+	}
+	&:hover,
+	&:focus{
+		background: $clr-neon;
+		color: $clr-bg;
+		// text-shadow: 0;
+	}
+	&:hover::before,
+	&:focus::before{
+		opacity: 1;
+	}
+	&:hover::after,
+	&:focus::after{
+		opacity: 1;
+	}
+}
+
+// we use em so if we change fontsize, it chamges accordingly, relative to the fontsize
+
+
+
+
+// when we hover on neon button, the after will have opacity: 1
